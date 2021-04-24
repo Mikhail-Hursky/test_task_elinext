@@ -1,12 +1,14 @@
-import { Form, Input } from "antd";
 import React, { useEffect } from "react";
 import { debounce } from "lodash";
+import { SearchOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import { observer } from "mobx-react-lite";
+import StorePhotos from "../../store/StorePhotos";
 
-export const Find = () => {
-  const [form] = Form.useForm();
-
+export const Find = observer(() => {
   const onChange = debounce((tags: string) => {
-    console.log(tags);
+    if (!tags.trim()) return;
+    StorePhotos.fetchPhotos(tags);
   }, 400);
 
   useEffect(() => {
@@ -15,12 +17,11 @@ export const Find = () => {
 
   return (
     <div>
-      <Form form={form} name="horizontal_login">
-        <Input
-          onChange={(e) => onChange(e.target.value)}
-          placeholder="input placeholder"
-        />
-      </Form>
+      <Input
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Search images"
+        prefix={<SearchOutlined />}
+      />
     </div>
   );
-};
+});

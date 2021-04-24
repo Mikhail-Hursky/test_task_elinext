@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Layout } from "antd";
 import { Switch, Route } from "react-router-dom";
-import { Api } from "../../api/Api";
 import { Find } from "../find_input/Find";
+import Gallery from "../gallery/Gallery";
 
 export default function Content() {
   return (
@@ -10,23 +10,20 @@ export default function Content() {
       <Layout.Content>
         <Switch>
           <Route exact path="/">
-            <Gallery />
+            <Callery />
           </Route>
-          <Route path="/gallery">Gallery</Route>
+          <Route path="/gallery"><Gallery /></Route>
         </Switch>
       </Layout.Content>
     </>
   );
 }
 
-const Gallery = () => {
-  useEffect(() => {
-    Api.getPhotoById("cats");
-  }, []);
-
+const Callery = () => {
   return (
     <>
       <Find />
+      <Gallery />
     </>
   );
 };
