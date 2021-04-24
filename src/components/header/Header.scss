@@ -1,8 +1,10 @@
 .Header {
+  padding: 0 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .ant-typography {
     color: whitesmoke;
+    font-size: 1.5rem;
   }
 }
