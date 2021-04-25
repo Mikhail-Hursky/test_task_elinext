@@ -1,17 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { Api } from "../api/Api";
-
-interface Photo {
-  farm: number;
-  id: string;
-  isfamily: number;
-  isfriend: number;
-  ispublic: number;
-  owner: string;
-  secret: string;
-  server: string;
-  title: string;
-}
+import { Photo } from "../interfaces/IPhoto";
 
 class StorePhotos {
   isLoading: boolean;
@@ -57,7 +46,7 @@ class StorePhotos {
   }
 
   stopLoading() {
-    this.isLoading = true;
+    this.isLoading = false;
   }
 
   fetchPhotos(tags: string) {
