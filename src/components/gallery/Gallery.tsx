@@ -1,22 +1,40 @@
 import React, { useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import { Find } from "../find_input/Find";
-import StorePhotos from "../../store/StorePhotos";
+import { Pagination, Spin } from "antd";
 import Card from "../card/Card";
+import Find from "../find_input/Find";
+import StorePhotos from "../../store/StorePhotos";
+import NotFind from "../not_find_images/NotFind";
 import "./Gallery.scss";
-import Title from "antd/lib/typography/Title";
-import { Spin } from "antd";
-import StoreUserPhoto from "../../store/StoreUserPhoto";
 
 const Gallery = observer(() => {
   useEffect(() => {
     return () => {
-      StoreUserPhoto.saveLocalStorage();
+      StorePhotos.unMount();
     };
   }, []);
+
+  const onChange = (e: number) => {
+    StorePhotos.setPage(e);
+  };
+
   return (
     <>
-      <Find />
+      <div className="Gallery_find">
+        <Find />
+        {StorePhotos.photo.length > 0 ? (
+          <Pagination
+            disabled={StorePhotos.isLoading}
+            current={StorePhotos.page}
+            pageSize={20}
+            showSizeChanger={false}
+            onChange={onChange}
+            total={StorePhotos.total}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
       <div className="Gallery">
         {!StorePhotos.isLoading ? (
           StorePhotos.photo.length > 0 ? (
@@ -25,9 +43,7 @@ const Gallery = observer(() => {
             ))
           ) : (
             <>
-              <Title level={2}>
-                No images here. Would you try to search for anything else?
-              </Title>
+              <NotFind />
             </>
           )
         ) : (

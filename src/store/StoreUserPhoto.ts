@@ -1,3 +1,4 @@
+import { makeAutoObservable } from "mobx";
 import { Photo } from "../interfaces/IPhoto";
 
 class StoreUserPhoto {
@@ -6,14 +7,17 @@ class StoreUserPhoto {
   constructor() {
     const arr = localStorage.getItem("PHOTO");
     this.photos = arr ? JSON.parse(arr) : [];
+    makeAutoObservable(this);
   }
 
   addPhoto(photo: Photo) {
     this.photos = [...this.photos, photo];
+    this.saveLocalStorage()
   }
 
   dletePhoto(id: string) {
     this.photos = this.photos.filter((el) => el.id !== id);
+    this.saveLocalStorage()
   }
 
   saveLocalStorage() {

@@ -4,41 +4,53 @@ import { Photo } from "../interfaces/IPhoto";
 
 class StorePhotos {
   isLoading: boolean;
+  tag: string;
   photo: Photo[];
   page: number;
-  pages: number | null;
-  perpage: number;
-  total: number | 0;
+  total: number;
 
   constructor() {
+    makeAutoObservable(this);
     this.isLoading = false;
+    this.tag = "";
     this.photo = [];
     this.page = 1;
-    this.pages = null;
-    this.perpage = 20;
     this.total = 0;
-    makeAutoObservable(this);
   }
 
-  setPage(num: number) {
-    this.page = num;
+  setPage(page: number) {
+    console.log(page);
+
+    this.page = page;
+    this.fetchPhotos();
   }
 
-  setPerPage(num: number) {
-    this.page = num;
+  setTotal(total: string) {
+    this.total = isNaN(+total) ? 0 : +total;
   }
 
-  setTotal(num: string) {
-    this.total = isNaN(+num) ? +num : 0;
+  setTag(tag: string) {
+    this.tag = tag;
+    this.page = 1;
+    this.fetchPhotos();
   }
 
-  setPhoto(arr: Photo[]) {
-    if (!arr) {
+  fetchPhotos() {
+    this.startLoading();
+    Api.getPhotoById(this.tag, this.page).then((res) => {
+      this.setTotal(res.total);
+      this.setPhoto(res.photo);
+      this.stopLoading();
+    });
+  }
+
+  setPhoto(photo: Photo[]) {
+    if (!photo) {
       this.photo = [];
       return;
     }
 
-    this.photo = arr;
+    this.photo = photo;
   }
 
   startLoading() {
@@ -49,13 +61,12 @@ class StorePhotos {
     this.isLoading = false;
   }
 
-  fetchPhotos(tags: string) {
-    this.startLoading();
-    Api.getPhotoById(tags, this.perpage, this.page).then(({ photo, total }) => {
-      this.setTotal(total);
-      this.setPhoto(photo);
-      this.stopLoading();
-    });
+  unMount() {
+    this.isLoading = false;
+    this.tag = "";
+    this.photo = [];
+    this.page = 1;
+    this.total = 0;
   }
 }
 
