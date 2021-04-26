@@ -5,7 +5,7 @@ const api_key = "be7600b3bff8c44546825c9906aeedb8";
 const format = "json";
 
 export const Api = {
-  getPhotoById: async (tags: string, page: number) => {
+  getPhotosByTags: async (tags: string, page: number) => {
     const res = await axios
       .get(URL + "?method=flickr.photos.search", {
         params: {

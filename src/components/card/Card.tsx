@@ -16,6 +16,9 @@ export default function Card({ photo }: Props) {
     Boolean(StoreUserPhoto.photos.find((el) => el.secret === photo.secret))
   );
 
+  console.log();
+  
+
   return (
     <>
       <AntCard

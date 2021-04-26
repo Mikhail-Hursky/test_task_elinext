@@ -17,7 +17,7 @@ export default function Mask({ setOff }: Props) {
             }}
             type="primary"
           >
-            Go Console
+            Go back!
           </Button>
         }
       />

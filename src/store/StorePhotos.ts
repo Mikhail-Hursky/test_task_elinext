@@ -37,7 +37,7 @@ class StorePhotos {
 
   fetchPhotos() {
     this.startLoading();
-    Api.getPhotoById(this.tag, this.page).then((res) => {
+    Api.getPhotosByTags(this.tag, this.page).then((res) => {
       this.setTotal(res.total);
       this.setPhoto(res.photo);
       this.stopLoading();

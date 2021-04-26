@@ -12,17 +12,14 @@ import Mask from "./components/mask/Mask";
 function App() {
   const [isOff, setOff] = useState(false);
 
-  const mouseEvent = debounce((e: any) => {
-    console.log("X " + e.screenX, "Y " + e.screenY);
-    setOff(true);
-  }, 1000 * 60);
+  const mouseEvent = debounce(() => setOff(true), 1000 * 60);
 
   useEffect(() => {
     window.addEventListener("mousemove", mouseEvent);
     return () => {
       window.removeEventListener("mousemove", mouseEvent);
     };
-  }, [isOff]);
+  }, []);
 
   return (
     <>
