@@ -19,8 +19,6 @@ class StorePhotos {
   }
 
   setPage(page: number) {
-    console.log(page);
-
     this.page = page;
     this.fetchPhotos();
   }

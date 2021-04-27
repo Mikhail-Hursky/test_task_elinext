@@ -6,18 +6,19 @@ import { Photo } from "../../interfaces/IPhoto";
 import { getLinkImg } from "../../tools/subsidiaryFunc";
 import StoreUserPhoto from "../../store/StoreUserPhoto";
 import "./Card.scss";
+import { observer } from "mobx-react-lite";
 
 interface Props {
   photo: Photo;
+  isAuth: boolean;
 }
 
-export default function Card({ photo }: Props) {
+const Card = observer(({ photo, isAuth }: Props) => {
   const [exists, setExists] = useState(
     Boolean(StoreUserPhoto.photos.find((el) => el.secret === photo.secret))
   );
-
+  const { isLoad } = StoreUserPhoto;
   console.log();
-  
 
   return (
     <>
@@ -27,21 +28,27 @@ export default function Card({ photo }: Props) {
         cover={<img alt={photo.title} src={getLinkImg(photo)} />}
         actions={[
           <>
-            {exists ? (
-              <>Saved</>
+            {isAuth ? (
+              exists ? (
+                <>Saved</>
+              ) : (
+                <Button
+                loading={isLoad}
+                  onClick={() => {
+                    StoreUserPhoto.addPhoto(photo).then(() => {
+                      setExists(true);
+                    });
+                  }}
+                  type="primary"
+                  shape="round"
+                  icon={<SaveOutlined />}
+                  size="large"
+                >
+                  Bookmark it!
+                </Button>
+              )
             ) : (
-              <Button
-                onClick={() => {
-                  StoreUserPhoto.addPhoto(photo);
-                  setExists(true);
-                }}
-                type="primary"
-                shape="round"
-                icon={<SaveOutlined />}
-                size="large"
-              >
-                Bookmark it!
-              </Button>
+              <></>
             )}
           </>,
         ]}
@@ -51,4 +58,6 @@ export default function Card({ photo }: Props) {
       ,
     </>
   );
-}
+});
+
+export default Card;

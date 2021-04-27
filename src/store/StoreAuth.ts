@@ -39,6 +39,15 @@ class Authorization {
           this.name = res.name;
           this.token = res.token;
           this.isAuth = true;
+
+          this.saveLocalStorage(
+            "AUTH",
+            JSON.stringify({
+              name: this.name,
+              token: this.token,
+              isAuth: this.isAuth,
+            })
+          );
         }
         if (res.status === 400) {
           message.error(res.message);
@@ -52,6 +61,17 @@ class Authorization {
     this.token = "";
     this.isLoad = false;
     this.isAuth = false;
+    this.saveLocalStorage("LOG_OUT", Date.now() + "");
+  }
+
+  saveLocalStorage(str: string, param: string) {
+    localStorage.setItem(str, param);
+  }
+
+  setAuthData(name = "", token = "", isAuth = false) {
+    this.name = name;
+    this.token = token;
+    this.isAuth = isAuth;
   }
 }
 

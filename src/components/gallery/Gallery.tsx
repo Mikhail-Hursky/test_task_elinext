@@ -4,10 +4,12 @@ import { Pagination, Spin } from "antd";
 import Card from "../card/Card";
 import Find from "../find_input/Find";
 import StorePhotos from "../../store/StorePhotos";
+import StoreAuth from "../../store/StoreAuth";
 import NotFind from "../not_find_images/NotFind";
 import "./Gallery.scss";
 
 const Gallery = observer(() => {
+  const { isAuth } = StoreAuth;
   useEffect(() => {
     return () => {
       StorePhotos.unMount();
@@ -39,7 +41,7 @@ const Gallery = observer(() => {
         {!StorePhotos.isLoading ? (
           StorePhotos.photo.length > 0 ? (
             StorePhotos.photo.map((photo) => (
-              <Card key={photo.id} photo={photo} />
+              <Card isAuth={isAuth} key={photo.id} photo={photo} />
             ))
           ) : (
             <>

@@ -22,11 +22,8 @@ export const Api = {
       })
       .then(({ data }) => {
         if (data.stat === "fail") throw new Error(data.message);
-        console.log(data);
-
         return data.photos;
-      })
-      .catch((e) => console.log(e));
+      });
     return res;
   },
 
@@ -71,15 +68,22 @@ export const Api = {
 
   addUserPhoto: async (token: string, photo: Photo) => {
     const res = await axios
-      .put(URL_MY_SERVER + "users/images", photo, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .put(
+        URL_MY_SERVER + "users/images",
+        { image: { ...photo } },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response: any) => {
-        return response.images;
+        return {
+          status: 200,
+          photos: [...response.data.images],
+        };
       })
-      .catch((e) => message.error(e.response.data.message));
+      .catch((e) => ({ status: 400, message: e.response.data.message }));
     return res;
   },
 
@@ -91,9 +95,12 @@ export const Api = {
         },
       })
       .then((response: any) => {
-        return response.images;
+        return {
+          status: 200,
+          photos: [...response.data.images],
+        };
       })
-      .catch((e) => message.error(e.response.data.message));
+      .catch((e) => ({ status: 400, message: e.response.data.message }));
     return res;
   },
 };

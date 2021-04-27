@@ -13,6 +13,7 @@ interface Props {
 }
 
 export const CardSave = observer(({ photo }: Props) => {
+  const { isLoad } = photoUser;
   return (
     <>
       <AntCard
@@ -21,7 +22,8 @@ export const CardSave = observer(({ photo }: Props) => {
         cover={<img alt={photo.title} src={getLinkImg(photo)} />}
         actions={[
           <Button
-            onClick={() => photoUser.dletePhoto(photo.id)}
+            loading={isLoad}
+            onClick={() => photoUser.dletePhoto(photo.secret)}
             type="primary"
             shape="round"
             danger

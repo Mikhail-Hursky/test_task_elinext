@@ -1,16 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Layout, Popconfirm } from "antd";
 import { LoginOutlined, LogoutOutlined } from "@ant-design/icons";
 import Title from "antd/lib/typography/Title";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Header.scss";
 import AuthModal from "../modal/AuthModal";
 import { observer } from "mobx-react-lite";
 import StoreAuth from "../../store/StoreAuth";
+import StoreUserPhoto from "../../store/StoreUserPhoto";
 
 const Header = observer(() => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const { isAuth, name } = StoreAuth;
+  const { isAuth, name, token } = StoreAuth;
+  const history = useHistory();
+
+  useEffect(() => {
+    StoreUserPhoto.setToken(token);
+  }, [isAuth]);
 
   return (
     <Layout.Header className="Header">
@@ -23,7 +29,10 @@ const Header = observer(() => {
           <Popconfirm
             placement="bottomRight"
             title={`${name} Do you really want to leave?`}
-            onConfirm={() => StoreAuth.logOut()}
+            onConfirm={() => {
+              StoreAuth.logOut();
+              history.push("/");
+            }}
             okText="Yes"
             cancelText="No"
           >
