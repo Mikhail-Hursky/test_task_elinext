@@ -1,3 +1,4 @@
+import { message } from "antd";
 import axios from "axios";
 import { Photo } from "../interfaces/IPhoto";
 
@@ -33,9 +34,9 @@ export const Api = {
     const res = await axios
       .post(URL_MY_SERVER + "auth/registration", { name, password, email })
       .then((response: any) => {
-        return response.message;
+        return { status: 200, message: response.data.message };
       })
-      .catch((e) => e.message);
+      .catch((e) => ({ status: 400, message: e.response.data.message }));
     return res;
   },
 
@@ -46,9 +47,13 @@ export const Api = {
         email,
       })
       .then((response: any) => {
-        return { name: response.name, token: response.token };
+        return {
+          status: 200,
+          name: response.data.name,
+          token: response.data.token,
+        };
       })
-      .catch((e) => e.message);
+      .catch((e) => ({ status: 400, message: e.response.data.message }));
     return res;
   },
 
@@ -60,7 +65,7 @@ export const Api = {
         },
       })
       .then(() => ({ status: 200 }))
-      .catch((e) => e.message);
+      .catch((e) => message.error(e.response.data.message));
     return res;
   },
 
@@ -74,7 +79,7 @@ export const Api = {
       .then((response: any) => {
         return response.images;
       })
-      .catch((e) => e.message);
+      .catch((e) => message.error(e.response.data.message));
     return res;
   },
 
@@ -88,7 +93,7 @@ export const Api = {
       .then((response: any) => {
         return response.images;
       })
-      .catch((e) => e.message);
+      .catch((e) => message.error(e.response.data.message));
     return res;
   },
 };

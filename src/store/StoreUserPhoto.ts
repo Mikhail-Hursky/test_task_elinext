@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { Api } from "../api/Api";
 import { Photo } from "../interfaces/IPhoto";
 
 class StoreUserPhoto {
@@ -12,12 +13,12 @@ class StoreUserPhoto {
 
   addPhoto(photo: Photo) {
     this.photos = [...this.photos, photo];
-    this.saveLocalStorage()
+    this.saveLocalStorage();
   }
 
   dletePhoto(id: string) {
     this.photos = this.photos.filter((el) => el.id !== id);
-    this.saveLocalStorage()
+    this.saveLocalStorage();
   }
 
   saveLocalStorage() {
